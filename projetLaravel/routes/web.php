@@ -3,7 +3,8 @@
 use App\Http\Controllers\AccueilController;
 use App\Http\Controllers\LivreController;
 use Illuminate\Support\Facades\Route;
-
+Route::view('/contact', 'contact')->name('contact');
+Route::get('/categories', [CategorieController::class, 'index'])->name('categories.index');
 /*
 |--------------------------------------------------------------------------
 | Routes web de BiblioTech
@@ -23,6 +24,7 @@ Route::view('/about', 'about')->name('about');
 Route::get('/livres', [LivreController::class, 'index'])->name('livres.index');
 Route::get('/livre/{id}', [LivreController::class, 'show'])->whereNumber('id')->name('livres.show');
 Route::get('/recherche', [LivreController::class, 'search'])->name('livres.search');
+Route::view('/contact', 'contact')->name('contact');
 
 // Démonstration : paramètre optionnel dans l'URL (séance 1)
 Route::get('/demo/hello/{nom?}', function (string $nom = 'Étudiant') {
