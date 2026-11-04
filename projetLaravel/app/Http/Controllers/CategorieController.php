@@ -19,4 +19,13 @@ class CategorieController extends Controller
 
         return view('categories.index', ['categories' => $categories]);
     }
+    public function show(string $slug): View
+    {
+        $categorie = Categorie::where('slug', $slug)->firstOrFail();
+
+        return view('categories.show', [
+            'categorie' => $categorie,
+            'livres' => $categorie->livres,
+        ]);
+    }
 }

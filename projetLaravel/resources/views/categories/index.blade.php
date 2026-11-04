@@ -12,9 +12,11 @@
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body d-flex justify-content-between align-items-center">
-                        <h2 class="h5 mb-0">{{ $categorie->nom }}</h2>
+                        <h2 class="h5 mb-0">
+                            <a href="{{ route('categories.show', $categorie->slug) }}" class="text-decoration-none stretched-link">{{ $categorie->nom }}</a>
+                        </h2>
                         <span class="badge bg-primary rounded-pill">
-                            {{ $categorie->livres_count }} {{ Str::plural('livre', $categorie->livres_count) }}
+                            {{ $categorie->livres_count }} livre(s)
                         </span>
                     </div>
                 </div>
