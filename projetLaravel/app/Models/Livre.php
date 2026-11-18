@@ -15,7 +15,7 @@ class Livre extends Model
 
     protected $fillable = [
         'titre',
-        'auteur',
+        'auteur_id',
         'annee',
         'nb_pages',
         'isbn',
@@ -24,6 +24,11 @@ class Livre extends Model
         'disponible',
         'categorie_id',
     ];
+
+    public function auteur(): BelongsTo
+    {
+        return $this->belongsTo(Auteur::class);
+    }
 
     protected function casts(): array
     {
@@ -55,11 +60,18 @@ class Livre extends Model
      * Le where(function…) produit : WHERE (titre LIKE ? OR auteur LIKE ?)
      * Les parenthèses empêchent le OR d'« avaler » les autres conditions (disponible = 1…).
      */
-    public function scopeRecherche(Builder $query, string $terme): Builder
+    public function scopeRecherche($query, ?string $terme)
     {
-        return $query->where(function (Builder $q) use ($terme) {
-            $q->where('titre', 'like', '%'.$terme.'%')
-                ->orWhere('auteur', 'like', '%'.$terme.'%');
+        if (! $terme) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($terme) {
+            $q->where('titre', 'like', "%{$terme}%")
+            ->orWhereHas('auteur', function ($a) use ($terme) {
+                $a->where('nom', 'like', "%{$terme}%")
+                    ->orWhere('prenom', 'like', "%{$terme}%");
+            });
         });
     }
 

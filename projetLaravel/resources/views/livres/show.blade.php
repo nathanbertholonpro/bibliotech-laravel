@@ -31,7 +31,11 @@
                 <div class="card-body">
                     <dl class="row">
                         <dt class="col-sm-3"><i class="fas fa-user"></i> Auteur</dt>
-                        <dd class="col-sm-9">{{ $livre->auteur }}</dd>
+                        <dd class="col-sm-9">
+                            @if ($livre->auteur)
+                                <a href="{{ route('auteurs.show', $livre->auteur) }}">{{ $livre->auteur->nom_complet }}</a>
+                            @endif
+                        </dd>
 
                         <dt class="col-sm-3"><i class="fas fa-tag"></i> Catégorie</dt>
                         <dd class="col-sm-9">{{ $livre->categorie->nom ?? 'Non classé' }}</dd>

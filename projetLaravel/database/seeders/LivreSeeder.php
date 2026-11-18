@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Categorie;
 use App\Models\Livre;
 use Illuminate\Database\Seeder;
+use App\Models\Auteur;
 
 class LivreSeeder extends Seeder
 {
@@ -39,12 +40,18 @@ class LivreSeeder extends Seeder
             ['Harry Potter à l\'école des sorciers', 'J.K. Rowling', 1997, 320, 'jeunesse', true, 'Un jeune sorcier découvre Poudlard.'],
         ];
 
-        foreach ($livres as $i => [$titre, $auteur, $annee, $pages, $slug, $disponible, $resume]) {
+        foreach ($livres as $i => [$titre, $nomComplet, $annee, $pages, $slug, $disponible, $resume]) {
+            $morceaux = explode(' ', trim($nomComplet));
+            $nom = array_pop($morceaux);
+            $prenom = implode(' ', $morceaux) ?: null;
+
+            $auteur = Auteur::firstOrCreate(['nom' => $nom, 'prenom' => $prenom]);
+
             Livre::updateOrCreate(
                 ['isbn' => sprintf('978-2-1234-%04d-%d', 5678 + $i, $i % 10)],
                 [
                     'titre' => $titre,
-                    'auteur' => $auteur,
+                    'auteur_id' => $auteur->id,
                     'annee' => $annee,
                     'nb_pages' => $pages,
                     'resume' => $resume,
