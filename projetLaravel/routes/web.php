@@ -5,6 +5,7 @@ use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\LivreController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuteurController;
+use App\Http\Controllers\Gestion;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,9 @@ Route::get('/livres', [LivreController::class, 'index'])->name('livres.index');
 Route::get('/livre/{id}', [LivreController::class, 'show'])->whereNumber('id')->name('livres.show');
 Route::get('/recherche', [LivreController::class, 'search'])->name('livres.search');
 Route::get('/auteurs/{auteur}', [AuteurController::class, 'show'])->name('auteurs.show');
+Route::prefix('gestion')->name('gestion.')->group(function () {
+    Route::resource('livres', Gestion\LivreController::class);
+});
 
 // Démonstration : paramètre optionnel dans l'URL (séance 1)
 Route::get('/demo/hello/{nom?}', function (string $nom = 'Étudiant') {
